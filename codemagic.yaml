@@ -1,5 +1,15 @@
 workflows:
-  sample-workflow:
-    name: Codemagic Sample Workflow
+  android-workflow:
+    name: Android APK Workflow
     max_build_duration: 120
     instance_type: mac_mini_m2
+    scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Android APK
+        script: |
+          ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/apk/release/*.apk
+      - app/build/outputs/apk/release/*.apk
